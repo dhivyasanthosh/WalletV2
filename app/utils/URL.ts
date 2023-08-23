@@ -7,4 +7,6 @@
  *************************************************/
 
 // Base URL
-export const getBaseURL = () => {};
+export const getBaseURL = 'https://dev-api.thebeynd.com/';
+
+export const LOGIN = 'v1/auth/login';

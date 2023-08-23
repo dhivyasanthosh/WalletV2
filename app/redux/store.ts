@@ -23,14 +23,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Utilities and components
 import {HTTPClient} from '../utils/HTTPClient';
+import auth from '../redux/slices/AuthSlice';
+import device from '../redux/slices/DeviceSlice';
+import storage from 'redux-persist/lib/storage';
 
 const reducers = combineReducers({
   [HTTPClient.reducerPath]: HTTPClient.reducer,
+  auth,
+  device,
 });
 
 const persistConfig = {
   key: 'root',
-  storage: AsyncStorage,
+  storage: storage,
   whitelist: [], // deletes all state value except "auth" state value
   blacklist: [''],
 };
@@ -44,7 +49,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
-    }).concat();
+    }).concat(HTTPClient.middleware);
     // comment this line if your system doesnt have flipper installed
     // if (__DEV__ && !process.env.JEST_WORKER_ID) {
     //   const createDebugger = require("redux-flipper").default;

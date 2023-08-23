@@ -7,7 +7,7 @@
  *************************************************/
 
 // imports
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   Image,
@@ -21,10 +21,11 @@ import {
 
 // components and utilities
 import InputContainer from '../../components/InputContainer';
+import {useLoginMutation} from '../../redux/services/AuthService';
 import {COLOR, FONT_FAMILY, FONT_SIZE} from '../../utils/Constants';
 import {MESSAGES} from '../../utils/Message';
 import {IMAGES} from '../../utils/SharedImages';
-import {navigate} from '../../utils/Utility';
+import Utility, {navigate} from '../../utils/Utility';
 
 const {height, width} = Dimensions.get('window');
 
@@ -34,9 +35,27 @@ const LoginScreen = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(true);
 
+  // API function declarations
+  const [signinApiRequest, signinApiResponse] = useLoginMutation();
+
+  useEffect(() => {
+    if (signinApiResponse.isSuccess) {
+      console.log('jdfhjkdsfhsjkdfhsjkdf', signinApiResponse.isSuccess);
+      navigate('main', {});
+    } else {
+      Utility.showSnackBar(MESSAGES.S_W_W_MESSAGE);
+    }
+  }, [signinApiResponse.isSuccess]);
+
   // Api functions
   const handelLogin = () => {
-    navigate('main', {});
+    const data = {
+      email: email.toLocaleLowerCase().trim(),
+      password: password.trim(),
+    };
+
+    signinApiRequest(data);
+    // navigate('main', {});
   };
 
   // initial render
