@@ -21,6 +21,7 @@ import {
 import {COLOR, FONT_FAMILY, FONT_SIZE} from '../utils/Constants';
 
 export default ({
+  testID,
   placeholder,
   label,
   style = {},
@@ -69,7 +70,7 @@ export default ({
             {
               height: 20,
               width: 20,
-              objectFit: "contain",
+              objectFit: 'contain',
             },
             {...leftIconStyles},
           ]}
@@ -87,6 +88,7 @@ export default ({
           },
           {...textInputStyle},
         ]}
+        testID={testID}
         placeholder={placeholder}
         placeholderTextColor={'grey'}
         multiline={multiline}

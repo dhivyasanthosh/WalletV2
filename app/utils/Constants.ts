@@ -18,6 +18,7 @@ export const COLOR = {
   TAB_BG: '#F4F6FF',
   BG_THEME: '#E2F0FF',
   RED: '#DD1717',
+  REDLIGHT: '#e80909',
   GREEN: '#11964E',
   GREY: '#7B8389',
   SKY_BLUE: '#D4F9FF',

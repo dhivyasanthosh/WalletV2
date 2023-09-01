@@ -30,6 +30,9 @@ import {IMAGES} from '../../utils/SharedImages';
 import {navigateBack} from '../../utils/Utility';
 import ModalContainer from '../../components/ModalContainer';
 import RadioButton from '../../components/RadioButton';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../redux/store';
+import {Ids} from '../../utils/URL';
 
 const {height, width} = Dimensions.get('window');
 
@@ -59,11 +62,22 @@ const BankAccountData = [
 const WithDrawScreen = () => {
   // state values
   const [amount, setAmount] = useState('');
+  const [textAmount, setTextAmount] = useState(false);
   const [isVisibleBankAccount, setISVisibleBankAccount] = useState(false);
   const [isVisibleTransactionpopup, setISVisibleTransactionpopup] =
     useState(false);
   const [bankAccountData, setBankAccountData] = useState(BankAccountData);
   const [selectedAccount, setSelectedAccount] = useState({});
+  const [walletData, setWalletData] = useState<any>({});
+
+  // global state values
+  const walletDetails = useSelector(
+    (state: RootState) => state.auth.walletDetails,
+  );
+  useEffect(() => {
+    const walletId = walletDetails.find(item => item.userId === Ids.userId);
+    setWalletData(walletId);
+  }, []);
 
   useEffect(() => {
     const primaryAccount = bankAccountData.find(
@@ -74,6 +88,15 @@ const WithDrawScreen = () => {
       handleOnClick(primaryAccount);
     }
   }, []);
+
+  const handleOnClickWithdrawPay = () => {
+    if (amount === '') {
+      setTextAmount(true);
+    } else {
+      setTextAmount(false);
+      setISVisibleTransactionpopup(true);
+    }
+  };
 
   // choose account modal
   const bankAccountDetails = () => (
@@ -156,9 +179,9 @@ const WithDrawScreen = () => {
             <Text style={[styles.transferText, {flex: 1, marginStart: 5}]}>
               {MESSAGES.withdraw}
             </Text>
-            <Text style={styles.transferText}>{MESSAGES.balance}</Text>
+            <Text style={styles.transferText}>{MESSAGES.balance}: </Text>
             <Text style={[styles.transferText, {color: COLOR.PRIMARY}]}>
-              {'$ 45,785.00'}
+              $ {walletData.availableBalance}
             </Text>
           </View>
           <View style={styles.amountView}>
@@ -174,6 +197,10 @@ const WithDrawScreen = () => {
                 onChangeText={setAmount}
               />
             </View>
+            {textAmount && (
+              <Text style={styles.validationText}>{'Enter Amount'}</Text>
+            )}
+
             <Text style={styles.chooseAccText}>{MESSAGES.chooseAcc}</Text>
             <TouchableOpacity
               onPress={() => {
@@ -202,9 +229,7 @@ const WithDrawScreen = () => {
             </TouchableOpacity>
           </View>
           <TouchableOpacity
-            onPress={() => {
-              setISVisibleTransactionpopup(true);
-            }}
+            onPress={() => handleOnClickWithdrawPay()}
             style={[
               styles.fundButton,
               {
@@ -385,5 +410,10 @@ const styles = StyleSheet.create({
     color: COLOR.GREY,
     textAlign: 'center',
     marginHorizontal: 20,
+  },
+  validationText: {
+    fontSize: FONT_SIZE.XS,
+    fontFamily: FONT_FAMILY.REGULAR,
+    color: COLOR.RED,
   },
 });

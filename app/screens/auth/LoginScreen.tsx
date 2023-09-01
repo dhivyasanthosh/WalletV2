@@ -32,20 +32,21 @@ const {height, width} = Dimensions.get('window');
 const LoginScreen = () => {
   // state values
   const [email, setEmail] = useState('');
+  const [textEmail, setTextEmail] = useState(false);
   const [password, setPassword] = useState('');
+  const [textPassword, setTextPassword] = useState(false);
   const [showPassword, setShowPassword] = useState(true);
 
   // API function declarations
-  const [signinApiRequest, signinApiResponse] = useLoginMutation();
+  // const [signinApiRequest, signinApiResponse] = useLoginMutation();
 
-  useEffect(() => {
-    if (signinApiResponse.isSuccess) {
-      console.log('jdfhjkdsfhsjkdfhsjkdf', signinApiResponse.isSuccess);
-      navigate('main', {});
-    } else {
-      Utility.showSnackBar(MESSAGES.S_W_W_MESSAGE);
-    }
-  }, [signinApiResponse.isSuccess]);
+  // useEffect(() => {
+  //   if (signinApiResponse.isSuccess) {
+  //     navigate('main', {});
+  //   } else {
+  //     Utility.showSnackBar(MESSAGES.S_W_W_MESSAGE);
+  //   }
+  // }, [signinApiResponse.isSuccess]);
 
   // Api functions
   const handelLogin = () => {
@@ -53,8 +54,19 @@ const LoginScreen = () => {
       email: email.toLocaleLowerCase().trim(),
       password: password.trim(),
     };
+    if (email.trim() === '') {
+      setTextEmail(true);
+    } else {
+      setTextEmail(false);
+    }
+    if (password.trim() === '') {
+      setTextPassword(true);
+    } else {
+      setTextPassword(false);
+      navigate('main', {});
+    }
 
-    signinApiRequest(data);
+    // signinApiRequest(data);
     // navigate('main', {});
   };
 
@@ -72,7 +84,9 @@ const LoginScreen = () => {
         style={styles.bgImage}
         source={IMAGES.login_bg}>
         <View style={styles.welcomeView}>
-          <Text style={styles.welcomText}>{MESSAGES.welcomeback}</Text>
+          <Text testID="welcomeback" style={styles.welcomText}>
+            {MESSAGES.welcomeback}
+          </Text>
           <Text style={styles.loginText}>{MESSAGES.plslogin}</Text>
         </View>
         <View style={styles.emailView}>
@@ -83,6 +97,7 @@ const LoginScreen = () => {
           />
         </View>
         <InputContainer
+          testID="email"
           value={email}
           placeholder={MESSAGES.email_placeholder}
           textInputStyle={styles.textInputStyle}
@@ -91,11 +106,15 @@ const LoginScreen = () => {
           autoCapitalize={'none'}
           inputMode={'email'}
         />
+        {textEmail && (
+          <Text style={styles.validationText}>{'Email is required'}</Text>
+        )}
 
         <View style={[styles.emailView, {marginTop: 20}]}>
           <Text style={styles.emailText}>{MESSAGES.password}</Text>
         </View>
         <InputContainer
+          testID="password"
           value={password}
           placeholder={MESSAGES.pwd_placeholder}
           textInputStyle={styles.textInputStyle}
@@ -109,11 +128,17 @@ const LoginScreen = () => {
             setShowPassword(!showPassword);
           }}
         />
+        {textPassword && (
+          <Text style={styles.validationText}>{'Password is required'}</Text>
+        )}
         <TouchableOpacity style={styles.emailView}>
           <Text style={styles.forget}>{MESSAGES.forgotpwd}</Text>
         </TouchableOpacity>
       </ImageBackground>
-      <TouchableOpacity onPress={handelLogin} style={styles.loginButton}>
+      <TouchableOpacity
+        testID="loginbtn"
+        onPress={handelLogin}
+        style={styles.loginButton}>
         <Text style={styles.login}>{MESSAGES.login}</Text>
       </TouchableOpacity>
     </View>
@@ -131,7 +156,7 @@ const styles = StyleSheet.create({
   welcomeView: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: height / 8,
+    marginTop: height / 10,
   },
   welcomText: {
     fontFamily: FONT_FAMILY.BOLD,
@@ -188,5 +213,11 @@ const styles = StyleSheet.create({
     fontFamily: FONT_FAMILY.REGULAR,
     fontSize: FONT_SIZE.REGULAR,
     color: COLOR.PRIMARY_1,
+  },
+  validationText: {
+    fontSize: FONT_SIZE.XS,
+    fontFamily: FONT_FAMILY.REGULAR,
+    color: COLOR.REDLIGHT,
+    marginLeft: 10,
   },
 });

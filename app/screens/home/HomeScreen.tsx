@@ -7,7 +7,7 @@
  *************************************************/
 
 // imports
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -30,9 +30,15 @@ import {
 
 // components and utilities
 import ModalContainer from '../../components/ModalContainer';
+import {
+  useTransactionDetailsQuery,
+  useUserDetailsQuery,
+  useWalletDetailsQuery,
+} from '../../redux/services/AuthService';
 import {COLOR, FONT_FAMILY, FONT_SIZE} from '../../utils/Constants';
 import {MESSAGES} from '../../utils/Message';
 import {IMAGES} from '../../utils/SharedImages';
+import {Ids} from '../../utils/URL';
 import {navigate} from '../../utils/Utility';
 
 const {height, width} = Dimensions.get('window');
@@ -99,6 +105,50 @@ const HomeScreen = () => {
   // state value
   const [isVisibleCancelModal, setIsVisibleCancelModal] = useState(false);
   const [cancelReasonText, setCancelReasonText] = useState('');
+  const [data, setData] = useState<any>({});
+  const [walletData, setWalletData] = useState<any>({});
+
+  // API function
+  const userDetailResponse = useUserDetailsQuery(Ids.userId);
+  const walletDetailResponse = useWalletDetailsQuery(Ids.userId);
+  const transactionDetailResponse = useTransactionDetailsQuery(Ids.userId);
+
+  useEffect(() => {
+    if (userDetailResponse.isSuccess) {
+      console.log('success data 1');
+      setData(
+        userDetailResponse.data.Users.find(item => item.id === Ids.userId),
+      );
+    } else {
+      console.log('failed data 1');
+    }
+  }, [userDetailResponse]);
+
+  useEffect(() => {
+    if (walletDetailResponse.isSuccess) {
+      console.log('success wallet 2');
+      setWalletData(
+        walletDetailResponse.data.response.find(
+          item => item.userId === Ids.userId,
+        ),
+      );
+    } else {
+      console.log('failed wallet 2');
+    }
+  }, [walletDetailResponse]);
+  useEffect(() => {
+    if (transactionDetailResponse.isSuccess) {
+      console.log(
+        '==============transaction data 1',
+        transactionDetailResponse,
+      );
+    } else {
+      console.log('=====================failed data 1');
+    }
+  }, [transactionDetailResponse]);
+  console.log('data =====', data);
+
+  console.log('walletdata=====', walletData);
 
   // transaction history render
   const transactionHistory = ({item}: any) => (
@@ -159,6 +209,7 @@ const HomeScreen = () => {
   // modal popup for cancel
   const cancelModalPopup = () => (
     <ModalContainer
+      testID="modaltest"
       isVisible={isVisibleCancelModal}
       setIsVisible={() => {
         setIsVisibleCancelModal(false);
@@ -278,8 +329,12 @@ const HomeScreen = () => {
         style={{height: height / 3.5}}
         source={IMAGES.backgroundImg}>
         <View style={styles.nameView}>
-          <Text style={styles.nameText}>{'Welcome back, John!'}</Text>
-          <Image style={{height: 21, width: 18}} source={IMAGES.bellIcon} />
+          <Text testID="welcomeName" style={styles.nameText}>
+            Welcome back {data?.firstName}
+          </Text>
+          <TouchableOpacity onPress={() => {}}>
+            <Image style={{height: 21, width: 18}} source={IMAGES.bellIcon} />
+          </TouchableOpacity>
           <View style={styles.batchView}>
             <Text style={{color: COLOR.WHITE, fontSize: FONT_SIZE.TINY}}>
               {'2'}
@@ -288,24 +343,28 @@ const HomeScreen = () => {
         </View>
 
         <View style={styles.cardView}>
-          <Text style={styles.cardTitle}>{'John Williamson'}</Text>
+          <Text style={styles.cardTitle}>
+            {data?.firstName} {data?.lastName}
+          </Text>
           <View style={styles.accountView}>
             <Text style={styles.cardText}>{MESSAGES.accountNo}</Text>
             <View style={styles.accountNo}>
-              <Text style={styles.amount}>{'**** **** **** 5634'}</Text>
+              <Text style={styles.amount}>{walletData?.accountNumber}</Text>
               <Image source={IMAGES.eyeopen} style={styles.eyeImage} />
             </View>
           </View>
           <View style={styles.accountView}>
             <Text style={styles.cardText}>{MESSAGES.currentBalance}</Text>
             <View style={styles.accountNo}>
-              <Text style={styles.amount}>$ {'35,000.00'}</Text>
+              <Text style={styles.amount}>$ {walletData?.currentBalance}</Text>
             </View>
           </View>
           <View style={styles.accountView}>
             <Text style={styles.cardText}>{MESSAGES.availableBalance}</Text>
             <View style={styles.accountNo}>
-              <Text style={styles.amount}>$ {'45,785.00'}</Text>
+              <Text style={styles.amount}>
+                $ {walletData?.availableBalance}
+              </Text>
             </View>
           </View>
         </View>

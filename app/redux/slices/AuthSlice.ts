@@ -1,13 +1,11 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {TokenDetails} from '../../entities/AuthObject';
 import {authService} from '../services/AuthService';
 
-type authState = {
-  tokenDetails: TokenDetails | null;
-};
-
-const initialState: authState = {
-  tokenDetails: null,
+const initialState = {
+  tokenDetails: '',
+  userDetails: [],
+  walletDetails: [],
+  transactionDetails: [],
 };
 export const authSlice = createSlice({
   name: 'auth',
@@ -18,6 +16,24 @@ export const authSlice = createSlice({
       authService.endpoints.login.matchFulfilled,
       (state, {payload}) => {
         state.tokenDetails = payload;
+      },
+    );
+    builder.addMatcher(
+      authService.endpoints.userDetails.matchFulfilled,
+      (state, {payload}) => {
+        state.userDetails = payload.response;
+      },
+    );
+    builder.addMatcher(
+      authService.endpoints.walletDetails.matchFulfilled,
+      (state, {payload}) => {
+        state.walletDetails = payload.response;
+      },
+    );
+    builder.addMatcher(
+      authService.endpoints.transactionDetails.matchFulfilled,
+      (state, {payload}) => {
+        state.transactionDetails = payload.response;
       },
     );
   },

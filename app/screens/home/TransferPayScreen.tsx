@@ -7,7 +7,7 @@
  *************************************************/
 
 // imports
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   Image,
@@ -29,17 +29,41 @@ import {IMAGES} from '../../utils/SharedImages';
 import {navigateBack} from '../../utils/Utility';
 import ModalContainer from '../../components/ModalContainer';
 import {useRoute} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../redux/store';
+import {Ids} from '../../utils/URL';
 
 const {height, width} = Dimensions.get('window');
 
 const TransferPayScreen = () => {
   // state values
   const [amount, setAmount] = useState('');
+  const [textAmount, setTextAmount] = useState(false);
   const [addNoteValue, setAddNoteValue] = useState('');
-  const [isVisibleTransactionpopup, setISVisibleTransactionpopup] = useState(false);
+  const [walletData, setWalletData] = useState<any>({});
+  const [isVisibleTransactionpopup, setISVisibleTransactionpopup] =
+    useState(false);
 
   const route = useRoute();
-  const {transferDetails} = route.params;
+  const {transferDetails}: any = route.params;
+
+  // global state values
+  const walletDetails = useSelector(
+    (state: RootState) => state.auth.walletDetails,
+  );
+  useEffect(() => {
+    const walletId = walletDetails.find(item => item.userId === Ids.userId);
+    setWalletData(walletId);
+  }, []);
+
+  const handleOnClick = () => {
+    if (amount === '') {
+      setTextAmount(true);
+    } else {
+      setTextAmount(false);
+      setISVisibleTransactionpopup(true);
+    }
+  };
 
   // initial render
   return (
@@ -66,9 +90,9 @@ const TransferPayScreen = () => {
             <Text style={[styles.transferText, {flex: 1, marginStart: 5}]}>
               {MESSAGES.pay}
             </Text>
-            <Text style={styles.transferText}>{MESSAGES.balance}</Text>
+            <Text style={styles.transferText}>{MESSAGES.balance}: </Text>
             <Text style={[styles.transferText, {color: COLOR.PRIMARY}]}>
-              {'$ 45,785.00'}
+              $ {walletData.availableBalance}
             </Text>
           </View>
           <View style={{alignItems: 'center', flex: 1}}>
@@ -86,6 +110,9 @@ const TransferPayScreen = () => {
                 onChangeText={setAmount}
               />
             </View>
+            {textAmount && (
+              <Text style={styles.validationText}>{'Enter Amount'}</Text>
+            )}
             <TextInput
               style={styles.addnotesText}
               placeholder={MESSAGES.addnote}
@@ -96,9 +123,7 @@ const TransferPayScreen = () => {
             />
           </View>
           <TouchableOpacity
-            onPress={() => {
-              setISVisibleTransactionpopup(true);
-            }}
+            onPress={() => handleOnClick()}
             style={[
               styles.fundButton,
               {
@@ -258,5 +283,12 @@ const styles = StyleSheet.create({
     color: COLOR.GREY,
     textAlign: 'center',
     marginHorizontal: 10,
+  },
+  validationText: {
+    fontSize: FONT_SIZE.XS,
+    fontFamily: FONT_FAMILY.REGULAR,
+    color: COLOR.RED,
+    marginLeft: 10,
+    marginTop: 5,
   },
 });

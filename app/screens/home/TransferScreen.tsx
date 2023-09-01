@@ -7,7 +7,7 @@
  *************************************************/
 
 // imports
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -21,12 +21,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {useSelector} from 'react-redux';
 
 // components and utilities
 import InputContainer from '../../components/InputContainer';
+import {RootState} from '../../redux/store';
 import {COLOR, FONT_FAMILY, FONT_SIZE} from '../../utils/Constants';
 import {MESSAGES} from '../../utils/Message';
 import {IMAGES} from '../../utils/SharedImages';
+import {Ids} from '../../utils/URL';
 import {navigate, navigateBack} from '../../utils/Utility';
 
 const {height, width} = Dimensions.get('window');
@@ -110,6 +113,16 @@ const TransferData = [
 const TransferScreen = () => {
   // state values
   const [searchValue, setSearchValue] = useState<string>('');
+  const [walletData, setWalletData] = useState<any>({});
+
+  // global state values
+  const walletDetails = useSelector(
+    (state: RootState) => state.auth.walletDetails,
+  );
+  useEffect(() => {
+    const walletId = walletDetails.find(item => item.userId === Ids.userId);
+    setWalletData(walletId);
+  }, []);
 
   // render transfer history
   const renderTransferDetails = ({item}: any) => {
@@ -173,9 +186,9 @@ const TransferScreen = () => {
             <Text style={[styles.transferText, {flex: 1, marginStart: 5}]}>
               {MESSAGES.transfer}
             </Text>
-            <Text style={styles.transferText}>{'Balance:'}</Text>
+            <Text style={styles.transferText}>{MESSAGES.balance}: </Text>
             <Text style={[styles.transferText, {color: COLOR.PRIMARY}]}>
-              {'$ 45,785.00'}
+              $ {walletData.availableBalance}
             </Text>
           </View>
           <View style={styles.searchInputContainer}>

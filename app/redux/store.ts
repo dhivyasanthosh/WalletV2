@@ -25,7 +25,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {HTTPClient} from '../utils/HTTPClient';
 import auth from '../redux/slices/AuthSlice';
 import device from '../redux/slices/DeviceSlice';
-import storage from 'redux-persist/lib/storage';
+// import storage from 'redux-persist/lib/storage';
 
 const reducers = combineReducers({
   [HTTPClient.reducerPath]: HTTPClient.reducer,
@@ -35,7 +35,7 @@ const reducers = combineReducers({
 
 const persistConfig = {
   key: 'root',
-  storage: storage,
+  storage: AsyncStorage,
   whitelist: [], // deletes all state value except "auth" state value
   blacklist: [''],
 };
