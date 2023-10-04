@@ -1,5 +1,7 @@
 import {HTTPClient} from '../../utils/HTTPClient';
 import {
+  EXTERNAL_ACCOUNTS_LIST,
+  GET_USER_BYSEARCH,
   LOGIN,
   USER_DETAILS,
   WALLET_ACCOUNT,
@@ -27,9 +29,21 @@ export const authService = HTTPClient.injectEndpoints({
         method: 'GET',
       }),
     }),
+    searchUsers: build.query({
+      query: () => ({
+        url: GET_USER_BYSEARCH,
+        method: 'GET',
+      }),
+    }),
     transactionDetails: build.query<any, any>({
       query: () => ({
         url: WALLET_TRANSACTION_HISTORY,
+        method: 'GET',
+      }),
+    }),
+    externalAccountList: build.query<any, any>({
+      query: () => ({
+        url: EXTERNAL_ACCOUNTS_LIST,
         method: 'GET',
       }),
     }),
@@ -42,4 +56,6 @@ export const {
   useUserDetailsQuery,
   useWalletDetailsQuery,
   useTransactionDetailsQuery,
+  useSearchUsersQuery,
+  useExternalAccountListQuery,
 } = authService;

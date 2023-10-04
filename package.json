@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "open-apk": "open ./android/app/build/outputs/apk/release/",
+    "android-apk": "cd android && ./gradlew assembleRelease && cd .. && npm run open-apk"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.19.1",
@@ -30,10 +32,11 @@
     "redux-persist": "^6.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0",
+    "@babel/core": "^7.22.11",
     "@babel/plugin-transform-modules-commonjs": "^7.22.11",
     "@babel/preset-env": "^7.22.14",
     "@babel/preset-react": "^7.22.5",
+    "@babel/preset-typescript": "^7.22.11",
     "@babel/runtime": "^7.20.0",
     "@react-native/eslint-config": "^0.72.2",
     "@react-native/metro-config": "^0.72.9",

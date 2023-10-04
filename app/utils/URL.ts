@@ -13,9 +13,11 @@ export const LOGIN = 'v1/auth/login';
 export const USER_DETAILS = '/api/GetUsers';
 export const WALLET_ACCOUNT = '/api/GetWalletAccounts';
 export const WALLET_TRANSACTION_HISTORY = '/api/GetTransactionDetails';
+export const GET_USER_BYSEARCH = 'api/GetUsersBySearch';
 export const LINK_EXTERNAL_ACCOUNT = '/api/LinkExternalAccount';
-export const PERSIST_EXTERNAL_ACCOUNT = '/api/PersistExternalAccount';
 export const EXTERNAL_ACCOUNTS_LIST = '/api/GetExternalAccounts';
+
+export const PERSIST_EXTERNAL_ACCOUNT = '/api/PersistExternalAccount';
 export const FUND_WALLET = '/api/CreateFundWalletRequest';
 export const WITHDRAW_WALLET = '/api/CreateWithdrawFromWalletRequest';
 export const FUND_TRANSACTION_HISTORY = '/api/GetFundTransferRequests';

@@ -5,7 +5,9 @@ const initialState = {
   tokenDetails: '',
   userDetails: [],
   walletDetails: [],
+  searchUsers: [],
   transactionDetails: [],
+  externalAccountList: [],
 };
 export const authSlice = createSlice({
   name: 'auth',
@@ -34,6 +36,18 @@ export const authSlice = createSlice({
       authService.endpoints.transactionDetails.matchFulfilled,
       (state, {payload}) => {
         state.transactionDetails = payload.response;
+      },
+    );
+    builder.addMatcher(
+      authService.endpoints.searchUsers.matchFulfilled,
+      (state, {payload}) => {
+        state.searchUsers = payload.response;
+      },
+    );
+    builder.addMatcher(
+      authService.endpoints.externalAccountList.matchFulfilled,
+      (state, {payload}) => {
+        state.externalAccountList = payload.response;
       },
     );
   },

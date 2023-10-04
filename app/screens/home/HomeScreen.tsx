@@ -27,9 +27,10 @@ import {
   MenuOptions,
   MenuTrigger,
 } from 'react-native-popup-menu';
+import ModalContainer from '../../components/ModalContainer';
 
 // components and utilities
-import ModalContainer from '../../components/ModalContainer';
+
 import {
   useTransactionDetailsQuery,
   useUserDetailsQuery,
@@ -209,7 +210,6 @@ const HomeScreen = () => {
   // modal popup for cancel
   const cancelModalPopup = () => (
     <ModalContainer
-      testID="modaltest"
       isVisible={isVisibleCancelModal}
       setIsVisible={() => {
         setIsVisibleCancelModal(false);
@@ -392,7 +392,7 @@ const HomeScreen = () => {
 
         <View style={styles.transactionView}>
           <View style={{flexDirection: 'row'}}>
-            <Text style={styles.transactionText}>
+            <Text testID="transaction" style={styles.transactionText}>
               {MESSAGES.transactionHistory}
             </Text>
             {menuModalView()}

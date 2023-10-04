@@ -10,7 +10,6 @@
 import Modal from 'react-native-modal';
 
 type Params = {
-  testID: any;
   children: any;
   isVisible: boolean;
   backdropOpacity: number;
@@ -18,7 +17,6 @@ type Params = {
 };
 
 export default ({
-  testID,
   isVisible,
   children,
   backdropOpacity,
@@ -26,7 +24,6 @@ export default ({
 }: Params) => {
   return (
     <Modal
-      testID={testID}
       isVisible={isVisible}
       hasBackdrop={true}
       backdropOpacity={backdropOpacity}

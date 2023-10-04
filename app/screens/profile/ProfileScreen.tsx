@@ -67,46 +67,79 @@ const ProfileScreen = () => {
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}>
           <TouchableOpacity style={styles.listView}>
-            <Image style={styles.listImage} source={IMAGES.changePwd} />
-            <Text style={styles.listText}>{MESSAGES.changepwd}</Text>
-            <TouchableOpacity>
-              <Image style={styles.rightArrow} source={IMAGES.rightArrow} />
-            </TouchableOpacity>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.listView}>
-            <Image style={styles.listImage} source={IMAGES.notification} />
-            <Text style={styles.listText}>{MESSAGES.notification}</Text>
+            <Image
+              testID="changepwdimg"
+              style={styles.listImage}
+              source={IMAGES.changePwd}
+            />
+            <Text testID="changepwd" style={styles.listText}>
+              {MESSAGES.changepwd}
+            </Text>
             <TouchableOpacity>
               <Image style={styles.rightArrow} source={IMAGES.rightArrow} />
             </TouchableOpacity>
           </TouchableOpacity>
           <TouchableOpacity style={styles.listView}>
             <Image
+              testID="notificationImg"
+              style={styles.listImage}
+              source={IMAGES.notification}
+            />
+            <Text testID="notification" style={styles.listText}>
+              {MESSAGES.notification}
+            </Text>
+            <TouchableOpacity>
+              <Image style={styles.rightArrow} source={IMAGES.rightArrow} />
+            </TouchableOpacity>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.listView}>
+            <Image
+              testID="terms&conditionImg"
               style={styles.listImage}
               source={IMAGES.termsAndConditions}
             />
-            <Text style={styles.listText}>{MESSAGES.termsandconditions}</Text>
+            <Text testID="terms&condition" style={styles.listText}>
+              {MESSAGES.termsandconditions}
+            </Text>
             <TouchableOpacity>
               <Image style={styles.rightArrow} source={IMAGES.rightArrow} />
             </TouchableOpacity>
           </TouchableOpacity>
           <TouchableOpacity style={styles.listView}>
-            <Image style={styles.listImage} source={IMAGES.contactUs} />
-            <Text style={styles.listText}>{MESSAGES.contactus}</Text>
+            <Image
+              testID="contactUsImg"
+              style={styles.listImage}
+              source={IMAGES.contactUs}
+            />
+            <Text testID="contactUs" style={styles.listText}>
+              {MESSAGES.contactus}
+            </Text>
             <TouchableOpacity>
               <Image style={styles.rightArrow} source={IMAGES.rightArrow} />
             </TouchableOpacity>
           </TouchableOpacity>
           <TouchableOpacity style={styles.listView}>
-            <Image style={styles.listImage} source={IMAGES.settings} />
-            <Text style={styles.listText}>{MESSAGES.settings}</Text>
+            <Image
+              testID="settingsImg"
+              style={styles.listImage}
+              source={IMAGES.settings}
+            />
+            <Text testID="settings" style={styles.listText}>
+              {MESSAGES.settings}
+            </Text>
             <TouchableOpacity>
               <Image style={styles.rightArrow} source={IMAGES.rightArrow} />
             </TouchableOpacity>
           </TouchableOpacity>
           <TouchableOpacity style={styles.listView}>
-            <Image style={styles.listImage} source={IMAGES.delete} />
-            <Text style={styles.listText}>{MESSAGES.deleteAccount}</Text>
+            <Image
+              testID="deleteAccountImg"
+              style={styles.listImage}
+              source={IMAGES.delete}
+            />
+            <Text testID="deleteAccount" style={styles.listText}>
+              {MESSAGES.deleteAccount}
+            </Text>
             <TouchableOpacity>
               <Image style={styles.rightArrow} source={IMAGES.rightArrow} />
             </TouchableOpacity>
@@ -116,8 +149,12 @@ const ProfileScreen = () => {
               setIsVisibleLogout(true);
             }}
             style={styles.listView}>
-            <Image style={styles.listImage} source={IMAGES.logout} />
-            <Text style={[styles.listText, {color: COLOR.RED}]}>
+            <Image
+              testID="logoutImg"
+              style={styles.listImage}
+              source={IMAGES.logout}
+            />
+            <Text testID="logout" style={[styles.listText, {color: COLOR.RED}]}>
               {MESSAGES.logout}
             </Text>
           </TouchableOpacity>

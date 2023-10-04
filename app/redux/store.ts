@@ -20,12 +20,12 @@ import {
 import {setupListeners} from '@reduxjs/toolkit/query';
 import {configureStore, combineReducers} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import storage from 'redux-persist/lib/storage';
 
 // Utilities and components
 import {HTTPClient} from '../utils/HTTPClient';
 import auth from '../redux/slices/AuthSlice';
 import device from '../redux/slices/DeviceSlice';
-// import storage from 'redux-persist/lib/storage';
 
 const reducers = combineReducers({
   [HTTPClient.reducerPath]: HTTPClient.reducer,
@@ -35,7 +35,7 @@ const reducers = combineReducers({
 
 const persistConfig = {
   key: 'root',
-  storage: AsyncStorage,
+  storage: storage,
   whitelist: [], // deletes all state value except "auth" state value
   blacklist: [''],
 };

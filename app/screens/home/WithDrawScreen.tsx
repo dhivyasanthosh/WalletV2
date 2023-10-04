@@ -33,6 +33,7 @@ import RadioButton from '../../components/RadioButton';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../redux/store';
 import {Ids} from '../../utils/URL';
+import { useExternalAccountListQuery } from '../../redux/services/AuthService';
 
 const {height, width} = Dimensions.get('window');
 
@@ -74,6 +75,17 @@ const WithDrawScreen = () => {
   const walletDetails = useSelector(
     (state: RootState) => state.auth.walletDetails,
   );
+
+  const externalAccountListResponse = useExternalAccountListQuery(Ids.userId);
+
+  useEffect(() => {
+    if (externalAccountListResponse.isSuccess) {
+      console.log('Successfully');
+    } else {
+      console.log('failed');
+    }
+  }, [externalAccountListResponse]);
+
   useEffect(() => {
     const walletId = walletDetails.find(item => item.userId === Ids.userId);
     setWalletData(walletId);

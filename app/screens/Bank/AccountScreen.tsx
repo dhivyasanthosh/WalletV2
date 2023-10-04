@@ -7,7 +7,7 @@
  *************************************************/
 
 // imports
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Dimensions,
   FlatList,
@@ -24,9 +24,11 @@ import InputContainer from '../../components/InputContainer';
 
 // components and utilities
 import ModalContainer from '../../components/ModalContainer';
+import {useExternalAccountListQuery} from '../../redux/services/AuthService';
 import {COLOR, FONT_FAMILY, FONT_SIZE} from '../../utils/Constants';
 import {MESSAGES} from '../../utils/Message';
 import {IMAGES} from '../../utils/SharedImages';
+import {Ids} from '../../utils/URL';
 import {navigate} from '../../utils/Utility';
 
 const {height, width} = Dimensions.get('window');
@@ -109,6 +111,16 @@ const AccountScreen = () => {
   const [isVisibleSecondPopup, setIsVisibleSecondPopup] = useState(false);
   const [isVisibleThirdPopup, setIsVisibleThirdPopup] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+
+  const externalAccountListResponse = useExternalAccountListQuery(Ids.userId);
+
+  useEffect(() => {
+    if (externalAccountListResponse.isSuccess) {
+      console.log('Successfully');
+    } else {
+      console.log('failed');
+    }
+  }, [externalAccountListResponse]);
 
   // render bank data
   const renderBankDetails = ({item}: any) => (

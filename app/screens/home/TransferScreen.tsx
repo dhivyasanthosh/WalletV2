@@ -25,6 +25,10 @@ import {useSelector} from 'react-redux';
 
 // components and utilities
 import InputContainer from '../../components/InputContainer';
+import {
+  useLazySearchUsersQuery,
+  useSearchUsersQuery,
+} from '../../redux/services/AuthService';
 import {RootState} from '../../redux/store';
 import {COLOR, FONT_FAMILY, FONT_SIZE} from '../../utils/Constants';
 import {MESSAGES} from '../../utils/Message';
@@ -115,6 +119,7 @@ const TransferScreen = () => {
   const [searchValue, setSearchValue] = useState<string>('');
   const [walletData, setWalletData] = useState<any>({});
 
+  const searchUsersResponse = useSearchUsersQuery(Ids.userId);
   // global state values
   const walletDetails = useSelector(
     (state: RootState) => state.auth.walletDetails,
@@ -123,6 +128,14 @@ const TransferScreen = () => {
     const walletId = walletDetails.find(item => item.userId === Ids.userId);
     setWalletData(walletId);
   }, []);
+
+  useEffect(() => {
+    if (searchUsersResponse.isSuccess) {
+      console.log('sucesss');
+    } else {
+      console.log('failed');
+    }
+  }, [searchUsersResponse]);
 
   // render transfer history
   const renderTransferDetails = ({item}: any) => {
